@@ -23,7 +23,7 @@ function getRandomInt(min, max) {
   }
 
 io.on("connection",(socket)=>{
-
+    io.emit("getTime",tempoRoleta);
     socket.on("tick",()=>{
         tp = tp +1;
         if(tp>=30){if(tempoRoleta>0){tempoRoleta = tempoRoleta -1;} tp = 0;}
