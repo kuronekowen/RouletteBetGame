@@ -5,21 +5,17 @@ var player = {
     money: 0
 };
 
-var gameTime = 0;
-
 colorTable = ["Vermelho","Verde","Laranja","Azul","Roxo"];
 
-$("#nickname_popup").hide();
+$("#nickname_popup").show();
 
-socket.on("welcome",() =>{
-    $("#nickname_popup").show();
-    socket.emit("updateReleased");
-});
+setInterval(()=>{
+    socket.emit("tick");
+},100);
 
-socket.on("gameUpdated",(data)=>{
-    gameTime = data["time"];
-    $("#timeleft").text("Lefts " + gameTime + "s for roulette roll.");
-    socket.emit("updateReleased");
+
+socket.on("getTime",(data)=>{
+    $("#timeleft").text("Lefts " + data + "s for roulette roll.");
 });
 
 socket.on("result",(data)=>
@@ -63,14 +59,6 @@ socket.on("name_ok",(data)=>{
     $("#profileMoney").text("$" + player.money);
 });
 
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    result = Math.floor(Math.random() * (max - min)) + min;
-    
-    return result;
-  }
-
   var option = {
     speed: 30,
     duration: 3,
@@ -80,13 +68,13 @@ function getRandomInt(min, max) {
 var rouletter = $('div.roulette');
 rouletter.roulette('option', option);
 
-function roll() {
+function roll(x) {
     var option = {
         speed: 30,
         duration: 3,
-        stopImageNumber : getRandomInt(0,5),
+        stopImageNumber : x,
         stopCallback : () => {
-            socket.emit("Resultado",result);
+            socket.emit("Resultado",x);
         }
     };
     rouletter.roulette('option', option);
@@ -94,8 +82,8 @@ function roll() {
 }
 
 
-socket.on("roll",()=>{
-    roll();
+socket.on("roll",(data)=>{
+    roll(data["numb"]);
 });
 
 $("#tobetBtn").click(()=> {

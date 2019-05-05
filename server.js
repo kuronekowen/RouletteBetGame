@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
 
-var gameTimeNormal = 10;
-var gameTimeRelease = 0;
-
 var rollgame = false;
+
+var tempoRoleta = 0;
+var tp = 0;
 
 var server = app.listen(80,()=>{
     console.log("listen on 80");
@@ -14,33 +14,34 @@ app.use(express.static('public'));
 
 var io = require('socket.io')(server);
 
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    result = Math.floor(Math.random() * (max - min)) + min;
+    return result;
+  }
+
 io.on("connection",(socket)=>{
-    io.emit("welcome");
-    socket.on("updateReleased",()=>{
-        gameTimeRelease = gameTimeRelease +1;
-        if(gameTimeRelease>=90){
-            gameTimeRelease = 0;
-            if(gameTimeNormal>0)
-            {
-             gameTimeNormal -=1;
-            }
-            if(gameTimeNormal <= 0){
-                if(rollgame == false){
-                io.emit("roll");
-                rollgame = true;
-                }
-            }
+
+    socket.on("tick",()=>{
+        tp = tp +1;
+        if(tp>=30){if(tempoRoleta>0){tempoRoleta = tempoRoleta -1;} tp = 0;}
+        io.emit("getTime",tempoRoleta);
+        if(tempoRoleta <= 0 && rollgame == false ) {
+            io.emit("roll",{numb:getRandomInt(0,4)});
+            rollgame = true;
         }
-        io.emit("gameUpdated",{time:gameTimeNormal});
     });
+
     socket.on("name",(data)=>{
-        io.emit("name_ok",data);
+        socket.emit("name_ok",data);
     });
+
     socket.on("Resultado",(data)=>{
         io.emit("result",data);
+        tempoRoleta = 10;
         rollgame = false;
-         gameTimeNormal = 10;
-         gameTimeRelease = 0;
-
+        tp = 30;
     });
 });
