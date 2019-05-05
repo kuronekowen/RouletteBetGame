@@ -33,11 +33,18 @@ io.on("connection",(socket)=>{
             rollgame = true;
         }
     });
+    
+    socket.on("chatMessage",(data)=>{
+        io.emit("chathistory",data);
+    });
 
     socket.on("name",(data)=>{
         socket.emit("name_ok",data);
     });
 
+    socket.on("aposta",(data) => {
+        io.emit("apostaslog",data);
+    });
     socket.on("Resultado",(data)=>{
         io.emit("result",data);
         tempoRoleta = 10;

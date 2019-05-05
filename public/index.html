@@ -25,6 +25,18 @@
                 <button class="btn btn-primary" id="sendName">Ok</button>
             </nav>
             <article id="game" style="opacity:0;">    
+                <nav id="chat" style="border-style:solid;width:25%;overflow: auto;">
+                    <h5>Chat</h5>
+                    <hr>
+                    <ul id="chathistory">
+
+                    </ul>
+                    <hr>
+                </nav>
+                <input type="text" id="chatMessage" placeholder="Message"></input>
+                <button id="sendMessage" class="btn btn-primary">Send</button>
+                <button id="clearChat" class="btn btn-primary">Clear</button>
+                <hr>
                 <nav id="userInfo">
                     <hgroup>
                         <h5 id="profileName">Profile Name</h5>
@@ -32,6 +44,8 @@
                     <img src="./img/profile.jpg" width="128" height="128" class="rounded-circle"/>
                     <p id="profileMoney">$0</p>
                     <button class="btn btn-primary" id="tobetBtn">Apostar</button>
+                    
+                    <p id="mybet">Your bet: none</p>
                 </nav>      
                 <div class="hover_bkgr_fricc">
                         <span class="helper"></span>
@@ -56,6 +70,10 @@
                     </div>
                     <h3 id="resultColor">Cor</h3>            
                     </nav>
+                    <hr>
+                    <ul id="apostasLog">
+                        
+                    </ul>
                 </article>
         <script src="./roulette.js"></script>
         <script src="./app.js"></script>

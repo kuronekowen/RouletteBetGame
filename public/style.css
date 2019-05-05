@@ -8,8 +8,15 @@
 }
 
 
+
+
 #userInfo {
     width:10%;
+}
+
+#chat
+{
+    height:30%;
 }
 
 #userInfo h5 {
@@ -17,7 +24,7 @@
     font-family:'Roboto',arial;
 }
 
-#userInfo p {
+#profileMoney {
     color:#2ecc71;
      font-family:'Roboto',arial;
 }
